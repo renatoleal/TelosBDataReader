@@ -9,8 +9,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import Entities.Dados;
-import Entities.Sensores;
 import Entities.Usuario;
 
 public class UsuarioDAO {

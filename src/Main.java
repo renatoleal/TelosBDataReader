@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.hibernate.SessionFactory;
 
 import util.HibernateUtil;
@@ -26,13 +28,15 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		String ipVM = JOptionPane.showInputDialog("Digite o IP da VM: ");
 		SessionFactory sf = HibernateUtil.getSessionFactory();
 		SensoresDAO sDAO = new SensoresDAO(sf);
 		DadosDAO dDAO = new DadosDAO(sf);
 		Socket clientSocket;
 		
 		try {
-			clientSocket = new Socket("192.168.0.110", 9002);
+			clientSocket = new Socket(ipVM, 9002);
 			DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
 			DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 			//BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -82,7 +86,7 @@ public class Main {
 					System.out.println("ID: " + idSensor +  ", Luminosidade: " + lumSensor);
 					
 					//Verificação dos limites do dado recebido
-					UsuarioDAO uDAO = new UsuarioDAO();
+					UsuarioDAO uDAO = new UsuarioDAO(sf);
 					List<Usuario> admins = uDAO.listAdmins();
 					if (admins != null) {
 						String emailsList = "";
@@ -95,14 +99,26 @@ public class Main {
 								&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
 							s.setLastWarning(d.getTimeTicks());
 							sDAO.save(s);
-							SendEmail.sendWarningMail(emailsList, idSensor, d.getValue(), d.getTimeTicks());
+							
+							SendEmail emailThread = new SendEmail();
+							SendEmail.destination = emailsList;
+							SendEmail.idSensor = idSensor;
+							SendEmail.valor = d.getValue();
+							SendEmail.time = d.getTimeTicks();							
+							emailThread.start();
 						}
 						else if (s.getMaxValue() != null
 								&& d.getValue() > s.getMaxValue()
 								&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
 							s.setLastWarning(d.getTimeTicks());
 							sDAO.save(s);
-							SendEmail.sendWarningMail(emailsList, idSensor, d.getValue(), d.getTimeTicks());
+							
+							SendEmail emailThread = new SendEmail();
+							SendEmail.destination = emailsList;
+							SendEmail.idSensor = idSensor;
+							SendEmail.valor = d.getValue();
+							SendEmail.time = d.getTimeTicks();
+							emailThread.start();
 						}
 					}
 					

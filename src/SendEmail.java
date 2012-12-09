@@ -9,9 +9,15 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
  
-public class SendEmail {
+public class SendEmail extends Thread {
  
-	public static void sendWarningMail(String destination, int idSensor, int valor, long time) {
+	public static String destination;
+	public static int idSensor;
+	public static int valor;
+	public static long time;
+	
+	@Override
+	public void run() {
  
 		final String username = "ecorssf2012";
 		final String password = "ecorssfmail";
@@ -45,7 +51,6 @@ public class SendEmail {
 			Transport.send(message);
  
 			System.out.println("Done");
- 
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
