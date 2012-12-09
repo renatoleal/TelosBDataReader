@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 21, 2012 10:42:38 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Entities.Usuario" table="Usuario" catalog="ecorssf_db">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="nome" type="string">
+            <column name="nome" length="65535" not-null="true" />
+        </property>
+        <property name="sobrenome" type="string">
+            <column name="sobrenome" length="65535" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="65535" />
+        </property>
+        <property name="login" type="string">
+            <column name="login" length="65535" not-null="true" />
+        </property>
+        <property name="senha" type="string">
+            <column name="senha" length="65535" not-null="true" />
+        </property>
+        <property name="ativo" type="boolean">
+            <column name="ativo" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

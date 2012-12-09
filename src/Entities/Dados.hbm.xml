@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Nov 21, 2012 10:42:38 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Entities.Dados" table="Dados" catalog="ecorssf_db">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="idSensor" type="int">
+            <column name="idSensor" not-null="true" />
+        </property>
+        <property name="value" type="int">
+            <column name="value" not-null="true" />
+        </property>
+        <property name="timeTicks" type="long">
+            <column name="timeTicks" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

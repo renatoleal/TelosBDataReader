@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Dec 7, 2012 2:26:39 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="Entities.Sensores" table="Sensores" catalog="ecorssf_db">
+        <id name="id" type="int">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="status" type="boolean">
+            <column name="status" not-null="true" />
+        </property>
+        <property name="maxValue" type="java.lang.Integer">
+            <column name="max_value" />
+        </property>
+        <property name="minValue" type="java.lang.Integer">
+            <column name="min_value" />
+        </property>
+        <property name="info" type="string">
+            <column name="info" length="65535" />
+        </property>
+        <property name="lastWarning" type="java.lang.Long">
+            <column name="last_warning" />
+        </property>
+    </class>
+</hibernate-mapping>
