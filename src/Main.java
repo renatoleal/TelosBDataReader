@@ -7,14 +7,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 
 import util.HibernateUtil;
 import DAO.DadosDAO;
 import DAO.SensoresDAO;
+import DAO.UsuarioDAO;
 import Entities.Dados;
 import Entities.Sensores;
+import Entities.Usuario;
 
 
 public class Main {
@@ -79,19 +82,28 @@ public class Main {
 					System.out.println("ID: " + idSensor +  ", Luminosidade: " + lumSensor);
 					
 					//Verificação dos limites do dado recebido
-					if (s.getMinValue() != null
-							&& d.getValue() < s.getMinValue()
-							&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
-						s.setLastWarning(d.getTimeTicks());
-						sDAO.save(s);
-						SendEmail.sendWarningMail("renas.leal@gmail.com", idSensor, d.getValue(), d.getTimeTicks());
-					}
-					else if (s.getMaxValue() != null
-							&& d.getValue() > s.getMaxValue()
-							&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
-						s.setLastWarning(d.getTimeTicks());
-						sDAO.save(s);
-						SendEmail.sendWarningMail("renas.leal@gmail.com", idSensor, d.getValue(), d.getTimeTicks());
+					UsuarioDAO uDAO = new UsuarioDAO();
+					List<Usuario> admins = uDAO.listAdmins();
+					if (admins != null) {
+						String emailsList = "";
+						for (Usuario usuario : admins) {
+							emailsList += usuario.getEmail() + ",";
+						}
+						
+						if (s.getMinValue() != null
+								&& d.getValue() < s.getMinValue()
+								&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
+							s.setLastWarning(d.getTimeTicks());
+							sDAO.save(s);
+							SendEmail.sendWarningMail(emailsList, idSensor, d.getValue(), d.getTimeTicks());
+						}
+						else if (s.getMaxValue() != null
+								&& d.getValue() > s.getMaxValue()
+								&& (d.getTimeTicks() - s.getLastWarning()) > 120000) {
+							s.setLastWarning(d.getTimeTicks());
+							sDAO.save(s);
+							SendEmail.sendWarningMail(emailsList, idSensor, d.getValue(), d.getTimeTicks());
+						}
 					}
 					
 				} catch (Exception e) {

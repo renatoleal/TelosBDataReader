@@ -21,7 +21,7 @@ public class DadosDAO {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public DadosDAO(SessionFactory sessionFactory){
+	public DadosDAO(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);
 	}
 
@@ -35,17 +35,17 @@ public class DadosDAO {
 			Criteria criteria = session.createCriteria(Dados.class);
 			criteria.add(Restrictions.eq("idSensor", id));
 			criteria.addOrder(Order.desc("timeTicks"));
-		    criteria.setMaxResults(1);
+			criteria.setMaxResults(1);
 
 			List results = criteria.list();
-			if(!results.isEmpty())
+			if (!results.isEmpty())
 				o = results.get(0);
 			tx.commit();
-		}
-		catch (Exception e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		}finally {
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
 			session.close();
 		}
 		return (Dados) o;
@@ -65,26 +65,43 @@ public class DadosDAO {
 
 			results = criteria.list();
 			tx.commit();
-		}
-		catch (Exception e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		}finally {
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
 			session.close();
 		}
 		return results;
 	}
-	
+
 	public List<Dados> getRangeFromSensor(int id, long startDate, long endDate) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Transaction t = session.beginTransaction();
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = null;
+		List results = null;
 
-		Criteria criteria = session.createCriteria(Dados.class);
-		criteria.add(Restrictions.ge("time", startDate));
-		criteria.add(Restrictions.le("time", endDate));
+		try {
+			tx = session.beginTransaction();
 
-		List results = criteria.list();
-		t.commit();
+			
+			Criteria criteria = session.createCriteria(Dados.class);
+			
+			
+			results = criteria.list();
+			criteria.add(Restrictions.eq("idSensor", id));
+			criteria.add(Restrictions.ge("timeTicks", startDate));
+			criteria.add(Restrictions.le("timeTicks", endDate));
+			criteria.addOrder(Order.asc("timeTicks"));
+			results = criteria.list();
+			tx.commit();
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 		return results;
 	}
 
@@ -95,11 +112,11 @@ public class DadosDAO {
 			tx = session.beginTransaction();
 			session.saveOrUpdate(entity);
 			tx.commit();
-		}
-		catch (Exception e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		}finally {
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
 			session.close();
 		}
 		return entity;
@@ -112,15 +129,13 @@ public class DadosDAO {
 			tx = session.beginTransaction();
 			session.delete(entity);
 			tx.commit();
-		}
-		catch (Exception e) {
-			if (tx!=null) tx.rollback();
-			e.printStackTrace(); 
-		}finally {
+		} catch (Exception e) {
+			if (tx != null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally {
 			session.close();
 		}
 	}
 
 }
-
-

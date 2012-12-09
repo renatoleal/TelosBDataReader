@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
-<!-- Generated Nov 21, 2012 10:42:38 PM by Hibernate Tools 3.2.1.GA -->
+<!-- Generated Dec 9, 2012 2:42:58 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="Entities.Usuario" table="Usuario" catalog="ecorssf_db">
-        <id name="id" type="int">
+    <class name="Entities.Usuario" table="usuario" catalog="ecorssf_db">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nome" type="string">
             <column name="nome" length="65535" not-null="true" />
@@ -25,6 +25,9 @@
         </property>
         <property name="ativo" type="boolean">
             <column name="ativo" not-null="true" />
+        </property>
+        <property name="admin" type="boolean">
+            <column name="admin" not-null="true" />
         </property>
     </class>
 </hibernate-mapping>

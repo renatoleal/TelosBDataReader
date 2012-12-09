@@ -1,5 +1,5 @@
 package Entities;
-// Generated Nov 21, 2012 10:42:37 PM by Hibernate Tools 3.2.1.GA
+// Generated Dec 9, 2012 2:42:57 PM by Hibernate Tools 3.2.1.GA
 
 
 
@@ -9,41 +9,42 @@ package Entities;
 public class Usuario  implements java.io.Serializable {
 
 
-     private int id;
+     private Integer id;
      private String nome;
      private String sobrenome;
      private String email;
      private String login;
      private String senha;
      private boolean ativo;
+     private boolean admin;
 
     public Usuario() {
     }
 
 	
-    public Usuario(int id, String nome, String sobrenome, String login, String senha, boolean ativo) {
-        this.id = id;
+    public Usuario(String nome, String sobrenome, String login, String senha, boolean ativo, boolean admin) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.login = login;
         this.senha = senha;
         this.ativo = ativo;
+        this.admin = admin;
     }
-    public Usuario(int id, String nome, String sobrenome, String email, String login, String senha, boolean ativo) {
-       this.id = id;
+    public Usuario(String nome, String sobrenome, String email, String login, String senha, boolean ativo, boolean admin) {
        this.nome = nome;
        this.sobrenome = sobrenome;
        this.email = email;
        this.login = login;
        this.senha = senha;
        this.ativo = ativo;
+       this.admin = admin;
     }
    
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
     
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
     public String getNome() {
@@ -87,6 +88,13 @@ public class Usuario  implements java.io.Serializable {
     
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+    public boolean isAdmin() {
+        return this.admin;
+    }
+    
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
 
